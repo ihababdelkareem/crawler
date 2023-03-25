@@ -1,13 +1,16 @@
-"""Persistence layer to keep track of crawled"""
+"""Persistence layer to keep track of crawled URLs"""
 
 from queue import Queue
 from threading import Lock
-from html_parser import URL
+
+from models.url import URL
+
 
 class CrawlerStorageContext:
     """
     Class that persists status of web-crawler.
     """
+
     def __init__(self) -> None:
         # Mutex that is held whenever a new URL is discovered.
         # This is to prevent multiple threads from writing the same url twice,
@@ -28,7 +31,7 @@ class CrawlerStorageContext:
         This can be done once we ensure that the URL had not been discovered previously. 
         Mutex is used to syncronize between multiple threads attempting to write the new URL
         as discovered. Note that the initial check is not protected by the lock,
-        as locking would not be required in the case that the URL is confirmed to be visited.
+        as locking would not be required in the case that the URL is confirmed to be visited (See https://en.wikipedia.org/wiki/Double-checked_locking).
 
         Args:
             url (URL): Discovered URL.
@@ -57,10 +60,17 @@ class CrawlerStorageContext:
         """
         return self._urls_to_visit
 
-    def commit(self) -> None:
+    def notify_url_processed(self) -> None:
         """
         Notify the underlying queue that a URL picked off the queue has been processed.
         This is primarily used by the queue to maintain context around which previously
         enqueued items are still being processed.
         """
         self._urls_to_visit.task_done()
+
+    def wait_until_urls_processed(self) -> None:
+        """
+        Block until all URLs that have been picked up from the queue we reported as processed,
+        which indicates that are no further URLs to be crawled.
+        """
+        self.url_queue.join()
