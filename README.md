@@ -14,7 +14,7 @@ Race conditions are expected to occur in the case of multiple threads attempting
 - Multiple threads attempting to log statements at the same time, leading in unexpected std-out behaviour or intertwined log statements, which is also handled by a lock.
 
 ## Running the Project
-To run the crawler or tests, first ensure that you have Python3 (3.6+ recommended) on your. After which you may install the required dependnecies from `requirements.txt` by running `pip3 install requirements.txt`
+To run the crawler or tests, first ensure that you have Python3 (3.6+ recommended) on your machine. After which you may install the required dependnecies from `requirements.txt` by running `pip3 install requirements.txt`
 ### Crawler
 After checking the prerequisites, you can simply start the crawler by running
 ```sh
