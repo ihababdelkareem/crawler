@@ -13,6 +13,9 @@ Race conditions are expected to occur in the case of multiple threads attempting
 - Multiple threads attempting to check and mark the same URL to be explored next, which is why a lock is used in the repository.
 - Multiple threads attempting to log statements at the same time, leading in unexpected std-out behaviour or intertwined log statements, which is also handled by a lock.
 
+### Termination
+As more and more URLs are being explored from the threads, new URLs are enqueued at a high rate to be explored next. Theoritically, the program terminates once all previously added URLs have been picked up from the queue and processed. The queue can be polled by the main thread to check whenever this happens. Once this is established, a `Poisin Pill`/`Termination Singal` is sent to all of the threads to indicate that their crawling is over.
+
 ## Running the Project
 To run the crawler or tests, first ensure that you have Python3 (3.6+ recommended) on your machine. After which you may install the required dependnecies from `requirements.txt` by running `pip3 install requirements.txt`
 ### Crawler
