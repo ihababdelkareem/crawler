@@ -54,9 +54,9 @@ class Crawler(Thread):
         if discovered_url == Crawler.TERMINATION_SIGNAL:
             return False
         linked_urls = self._service.get_links_under_url(discovered_url)
-        url_message = f'Thread:{self._id} is crawling: {discovered_url}\n'
-        url_message += '------ Found following URLs in page: \n'
+        url_message = f'Thread{self._id} is crawling: {discovered_url}\n'
         if not self._options.skip_links_found:
+            url_message += '------ Found following URLs in page: \n'
             for linked_url in linked_urls:
                 url_message += f'------ {linked_url}\n'
         self._logger.log(url_message)
