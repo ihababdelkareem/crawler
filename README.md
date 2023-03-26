@@ -11,7 +11,7 @@ In essence, multiple threads work in parallel to pull URLs from a shared queue o
 Race conditions are expected to occur in the case of multiple threads attempting to access and mutate a shared resource. In this web-crawler, race conditions are handled in the following scenarios:
 - Multiple threads attempting to `get` or `put` to the shared queue at the same time, which is why a thread-safe Queue from the python standard library is used.
 - Multiple threads attempting to check and mark the same URL to be explored next, which is why a lock is used in the repository.
-- Multiple threads attempting to log statements at the same time, leading in unexpected std-out behaviour or interwined log statements, which is also handled by a lock.
+- Multiple threads attempting to log statements at the same time, leading in unexpected std-out behaviour or intertwined log statements, which is also handled by a lock.
 
 ## Running the Project
 To run the crawler or tests, first ensure that you have Python3 (3.6+ recommended) on your. After which you may install the required dependnecies from `requirements.txt` by running `pip3 install requirements.txt`
