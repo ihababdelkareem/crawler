@@ -37,7 +37,7 @@ class Repository:
     def add_url_to_crawl(self, url: URL) -> None:
         """
         Add a newly discovered URL to the queue to be explored (i.e. parse it's HTML page).
-        This can be done once we ensure that the URL had not been discovered previously. 
+        This can be done once we ensure that the URL had not been discovered previously.
         Mutex is used to syncronize between multiple threads attempting to write the new URL
         as discovered. Note that the initial check is not protected by the lock,
         as locking would not be required in the case that the URL is confirmed to be visited before.

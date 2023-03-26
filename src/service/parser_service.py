@@ -9,7 +9,7 @@ from models.url import URL
 
 
 class HTMLParserService:
-    """ Parser class to handle fetching the related urls under a url's web-page."""
+    """Parser class to handle fetching the related urls under a url's web-page."""
 
     def __init__(self) -> None:
         pass
@@ -31,6 +31,6 @@ class HTMLParserService:
 
         soup = BeautifulSoup(html_page, "html.parser")
         linked_urls = []
-        for address in soup.findAll('a', attrs={'href': re.compile("^https?://")}):
-            linked_urls.append(URL(address.get('href')))
+        for address in soup.findAll("a", attrs={"href": re.compile("^https?://")}):
+            linked_urls.append(URL(address.get("href")))
         return linked_urls

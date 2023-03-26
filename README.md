@@ -51,45 +51,17 @@ Thread:1 is crawling: URL[https://monzo.com/blog/2018/07/03/the-big-list-update/
 To run the unit tests for all packages, simply run `pytest` with an optional argument `--cov` to get the coverage report.
 
 ```
-========================================================================= test session starts =========================================================================
+======================================================================================================================================== test session starts =========================================================================================================================================
 platform linux -- Python 3.10.4, pytest-7.2.2, pluggy-1.0.0
 rootdir: /workspaces/crawler
 plugins: anyio-3.6.2, mock-3.10.0, cov-4.0.0
-collected 11 items                                                                                                                                                    
+collected 12 items                                                                                                                                                                                                                                                                                   
 
-src/crawler/test/crawler_test.py ..                                                                                                                             [ 18%]
-src/crawler/test/launcher_test.py .                                                                                                                             [ 27%]
-src/models/test/url_test.py ...                                                                                                                                 [ 54%]
-src/repository/  test/repository_test.py ..                                                                                                                     [ 72%]
-src/service/test/parser_service_test.py ...                                                                                                                     [100%]
+src/crawler/test/crawler_test.py ..                                                                                                                                                                                                                                                            [ 16%]
+src/crawler/test/launcher_test.py .                                                                                                                                                                                                                                                            [ 25%]
+src/models/test/url_test.py ....                                                                                                                                                                                                                                                               [ 58%]
+src/repository/  test/repository_test.py ..                                                                                                                                                                                                                                                    [ 75%]
+src/service/test/parser_service_test.py ...                                                                                                                                                                                                                                                    [100%]
 
----------- coverage: platform linux, python 3.10.4-final-0 -----------
-Name                                       Stmts   Miss  Cover
---------------------------------------------------------------
-src/crawler/__init__.py                        0      0   100%
-src/crawler/crawler.py                        36      0   100%
-src/crawler/launcher.py                       27      0   100%
-src/crawler/test/__init__.py                   0      0   100%
-src/crawler/test/crawler_test.py              30      0   100%
-src/crawler/test/launcher_test.py             11      0   100%
-src/logger/__init__.py                         0      0   100%
-src/logger/logger.py                           7      0   100%
-src/models/__init__.py                         0      0   100%
-src/models/options.py                          9      0   100%
-src/models/test/__init__.py                    0      0   100%
-src/models/test/url_test.py                    5      0   100%
-src/models/url.py                             23      0   100%
-src/repository/__init__.py                     0      0   100%
-src/repository/repository.py                  28      0   100%
-src/repository/  test/repository_test.py      24      0   100%
-src/service/__init__.py                        0      0   100%
-src/service/parser_service.py                 18      0   100%
-src/service/test/__init__.py                   0      0   100%
-src/service/test/parser_service_test.py       18      0   100%
---------------------------------------------------------------
-TOTAL                                        236      0   100%
-
-
-========================================================================= 11 passed in 0.31s ==========================================================================
-
+========================================================================================================================================= 12 passed in 0.19s =========================================================================================================================================
 ```

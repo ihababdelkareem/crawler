@@ -22,11 +22,7 @@ class URL:
         Returns:
             str: subdomain
         """
-        hostname = urlparse(self._address).hostname
-        extracted_subdomain = None
-        if hostname:
-            extracted_subdomain = hostname.split('.')[0]
-        return extracted_subdomain
+        return urlparse(self._address).hostname
 
     @property
     def subdomain(self) -> str:
