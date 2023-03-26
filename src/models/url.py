@@ -7,7 +7,7 @@ class URL:
     Utility class to process different parts of an http address.
     """
 
-    def __init__(self, address) -> None:
+    def __init__(self, address: str) -> None:
         """Initialize the URL with a given address
 
         Args:

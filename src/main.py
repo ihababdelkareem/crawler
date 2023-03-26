@@ -28,4 +28,5 @@ if __name__ == '__main__':
     crawler_options = CrawlerOptions(base_url=URL(config[CrawlerOptions.BASE_URL]),
                                      thread_count=config[CrawlerOptions.THREAD_COUNT],
                                      skip_links_found=config[CrawlerOptions.SKIP_LINKS_FOUND])
-    CrawlerLauncher(crawler_options).crawl()
+    urls_crawled = CrawlerLauncher(crawler_options).crawl()
+    print(f'Found {len(urls_crawled)} URLs')

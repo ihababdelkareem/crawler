@@ -3,6 +3,7 @@
 import pytest
 from models.url import URL
 from service.parser_service import HTMLParserService
+from urllib.error import URLError
 
 HTML_PAGE_WITH_REFS = """
 <!DOCTYPE html>
@@ -41,7 +42,7 @@ TEST_URL = URL('https://monzo.com')
 @pytest.mark.parametrize("test_page,expected_link_count",
                          [(HTML_PAGE_WITH_REFS, 3),
                           (HTML_PAGE_WITHOUT_REFS, 0)])
-def test_links_returned(mocker, test_page, expected_link_count):
+def test_links_under_url_returned(mocker, test_page, expected_link_count):
     """
     Test that the parser service correctly returns 
     the right number of links when HTML contains href tags
@@ -53,3 +54,17 @@ def test_links_returned(mocker, test_page, expected_link_count):
     service = HTMLParserService()
     urls = service.get_links_under_url(TEST_URL)
     assert len(urls) == expected_link_count
+
+
+def test_links_returned_after_error(mocker):
+    """
+    Test that the parser service returns no links upon an exception 
+    being raised when fetching a page for a URL
+    """
+    mocker.patch(
+        'urllib.request.urlopen',
+        side_effect=URLError('Failed to fetch page'),
+    )
+    service = HTMLParserService()
+    urls = service.get_links_under_url(TEST_URL)
+    assert len(urls) == 0

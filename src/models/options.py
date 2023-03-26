@@ -3,7 +3,8 @@ from models.url import URL
 
 
 class CrawlerOptions:
-    """A class to control flags for the run of the crawler
+    """
+    A class to control flags for the run of the crawler
     """
     THREAD_COUNT = 'thread_count'
     SKIP_LINKS_FOUND = 'skip_links_found'

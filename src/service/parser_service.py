@@ -15,7 +15,8 @@ class HTMLParserService:
         pass
 
     def get_links_under_url(self, url: URL) -> list[URL]:
-        """Returns a list of URL objects found under the HTML page of a source url.
+        """
+        Returns a list of URL objects found under the HTML page of a source url.
 
         Args:
             url (URL): Source URL for HTML page.
