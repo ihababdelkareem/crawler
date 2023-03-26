@@ -48,7 +48,7 @@ Thread:1 is crawling: URL[https://monzo.com/blog/2018/07/03/the-big-list-update/
 ```
 
 ### Tests
-To run the unit tests for all packages, simply run `pytest` with an optional argument `--cov` to get the coverage report.
+To run the unit tests for all packages, simply run `pytest` with an optional argument `--cov` for the test coverage report.
 
 ```
 ======================================================================================================================================== test session starts =========================================================================================================================================
