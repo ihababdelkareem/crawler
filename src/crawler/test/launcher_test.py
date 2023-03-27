@@ -16,6 +16,8 @@ def mock_links_under_url(url):
     mock_pages = {
         URL("https://monzo.com"): [
             URL("https://monzo.com/a"),
+            URL("https://monzo.blog.com/"), # Not explored, different subdomain
+            URL("localhost://monzo.com/local"), # Not explored, invalid address scheme (not http/https)
             URL("https://monzo.com/b"),
             URL("https://monzo.com/xyz"),
             URL("https://a.xyz"),

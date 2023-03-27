@@ -74,7 +74,10 @@ class Crawler(Thread):
                 message += f"------ {linked_url}\n"
         self._logger.log(message)
         for linked_url in linked_urls:
-            if linked_url.is_valid and linked_url.subdomain == self._options.base_url_hostname:
+            if (
+                linked_url.is_valid
+                and linked_url.subdomain == self._options.base_url_hostname
+            ):
                 self._repository.add_url_to_crawl(linked_url)
         self._repository.notify_url_processed()
         return True
