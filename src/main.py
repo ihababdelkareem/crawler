@@ -38,4 +38,4 @@ if __name__ == "__main__":
         skip_links_found=config[CrawlerLauncherOptions.SKIP_LINKS_FOUND],
     )
     urls_crawled = CrawlerLauncher(crawler_launcher_options).crawl()
-    print(f"Found {len(urls_crawled)} URLs")
+    print(f"Crawled {len(urls_crawled)} URL(s)")

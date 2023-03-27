@@ -14,7 +14,7 @@ def test_repository_handles_redundancy():
     next_url_0 = repository.get_next_url()
     next_url_1 = repository.get_next_url()
 
-    assert len(repository.visited_urls) == 2
+    assert set(repository.visited_urls) == {URL("test_0"), URL("test_1")}
     assert next_url_0 == URL("test_0")
     assert next_url_1 == URL("test_1")
 
@@ -33,8 +33,8 @@ def test_repository_unblocks_when_all_links_processed():
     next_url_1 = repository.get_next_url()
     repository.notify_url_processed()
 
-    repository.wait_until_urls_processed()
+    repository.wait_until_all_urls_processed()
 
-    assert len(repository.visited_urls) == 2
+    assert set(repository.visited_urls) == {URL("test_0"), URL("test_1")}
     assert next_url_0 == URL("test_0")
     assert next_url_1 == URL("test_1")

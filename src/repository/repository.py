@@ -84,7 +84,7 @@ class Repository:
         """
         self._urls_to_visit.task_done()
 
-    def wait_until_urls_processed(self) -> None:
+    def wait_until_all_urls_processed(self) -> None:
         """
         Block until all URLs that have been picked up from the queue were reported as processed,
         which indicates that are no further URLs to be crawled.

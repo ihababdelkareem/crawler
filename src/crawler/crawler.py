@@ -63,18 +63,18 @@ class Crawler(Thread):
         - Notify repository that a the discovered URL has been processed.
         - Terminate if received TERMINATION_SIGNAL.
         """
-        discovered_url = self._repository.get_next_url()
-        if discovered_url == Crawler.TERMINATION_SIGNAL:
+        url_to_crawl = self._repository.get_next_url()
+        if url_to_crawl == Crawler.TERMINATION_SIGNAL:
             return False
-        linked_urls = self._html_parser.get_links_under_url(discovered_url)
-        message = f"Thread{self._thread_id} is crawling: {discovered_url}\n"
+        message = f"Thread-{self._thread_id} is currently crawling: {url_to_crawl}\n"
+        linked_urls = self._html_parser.get_links_under_url(url_to_crawl)
         if not self._options.skip_links_found:
             message += "------ Found following URLs in page: \n"
             for linked_url in linked_urls:
                 message += f"------ {linked_url}\n"
         self._logger.log(message)
         for linked_url in linked_urls:
-            if linked_url.subdomain == self._options.base_url_hostname:
+            if linked_url.is_valid and linked_url.subdomain == self._options.base_url_hostname:
                 self._repository.add_url_to_crawl(linked_url)
         self._repository.notify_url_processed()
         return True

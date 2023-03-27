@@ -7,6 +7,9 @@ class URL:
     Utility class to process different parts of an http address.
     """
 
+    HTTP = 'http'
+    HTTPS = 'https'
+
     def __init__(self, address: str) -> None:
         """Initialize the URL with a given address
 
@@ -14,18 +17,20 @@ class URL:
             address (address): http address for the URL
         """
         self._address = address
-        self._subdomain = self._init_subdomain()
+        self._subdomain = None
+        self._address_scheme = None
+        self._parse_url()
 
-    def _init_subdomain(self) -> str:
-        """Parses subdomain for URL.
-
-        Returns:
-            str: subdomain
+    def _parse_url(self) -> str | None:
         """
-        return urlparse(self._address).hostname
+        Parses subdomain and address for URL.
+        """
+        parsed_url = urlparse(self._address)
+        self._subdomain = parsed_url.hostname
+        self._address_scheme = parsed_url.scheme
 
     @property
-    def subdomain(self) -> str:
+    def subdomain(self) -> str | None :
         """Returns parsed subdomain of URL
 
         Returns:
@@ -42,6 +47,18 @@ class URL:
             string: address
         """
         return self._address
+
+    @property
+    def is_valid(self) -> str:
+        """
+        Returns whether or not a link is valid based on predefined criteria.
+        For this web-crawler, a link is considered valid if it has a valid 
+        subdomain and an http/https scheme.
+
+        Returns:
+            string: address
+        """
+        return self._subdomain and self._address_scheme in {URL.HTTP, URL.HTTPS}
 
     def __repr__(self) -> str:
         return f"URL[{self.address}]"
