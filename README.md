@@ -13,6 +13,10 @@ Race conditions are expected to occur in the case of multiple threads attempting
 - Multiple threads attempting to check and mark the same URL to be explored next, which is why a lock is used in the repository.
 - Multiple threads attempting to log statements at the same time, leading in unexpected std-out behaviour or intertwined log statements, which is also handled by a lock.
 
+### Nature of URLs
+As expected when parsing a web-page, we may encounter absolute URLs being referenced, such as https://monzo.com/ referencing https://monzo.com/contacts. Additionaly, we may encounter relative links, such as https://monzo.com/faq/ referencing
+/faq/2022, which resolves to https://monzo.com/faq/2022. Both relative and absolute URLs are resolved and added to be explored in the URLs queue.
+
 ### Termination
 As more and more URLs are being explored from the threads, new URLs are enqueued at a high rate to be explored next. Theoritically, the program terminates once all previously added URLs have been picked up from the queue and processed. The queue can be polled by the main thread to check whenever this happens. Once this is established, a `Poisin Pill`/`Termination Singal` is sent to all of the threads to indicate that their crawling is over.
 
