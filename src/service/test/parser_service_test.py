@@ -6,7 +6,7 @@ from requests import RequestException
 from models.url import URL
 from service.parser_service import HTMLParserService
 
-TEST_URL_WITH_REFS = URL("https://monzo-links.com")
+TEST_URL_WITH_REFS = URL("https://monzo-links.com/faq/index.html")
 HTML_PAGE_WITH_REFS = """
 <!DOCTYPE html>
 <html>
@@ -18,6 +18,8 @@ Some other link: <a href="https://www.facebook.com/b">
 <div>
 Some third link: <a href="http://www.hello-world.com">
 Some forth link: <a href="http://www.monzo.com/a?q=hi">
+Some fifth relative link: <a href="relative.html">
+Some sixth relative link: <a href="/login">
 </div>
 </a>
 </p>
@@ -41,14 +43,26 @@ HTML_PAGE_WITHOUT_REFS = """
 """
 
 
+class MockHTTPResponse(MagicMock):
+    """Mocked HTTP response"""
+
+    def __init__(self, status_code, text):
+        super().__init__()
+        self.status_code = status_code
+        self.text = text
+
+    @property
+    def ok(self):
+        return self.status_code < 400
+
+
 def _get_mocked_http_response(test_address):
-    mock_response = MagicMock()
-    mock_response.status_code = 200
-    mock_response.text = (
+    mock_html_text = (
         HTML_PAGE_WITH_REFS
         if test_address == TEST_URL_WITH_REFS.address
         else HTML_PAGE_WITHOUT_REFS
     )
+    mock_response = MockHTTPResponse(200, mock_html_text)
     return mock_response
 
 
@@ -62,6 +76,8 @@ def _get_mocked_http_response(test_address):
                 URL("https://www.facebook.com/b"),
                 URL("http://www.hello-world.com"),
                 URL("http://www.monzo.com/a?q=hi"),
+                URL("https://monzo-links.com/faq/relative.html"),
+                URL("https://monzo-links.com/login"),
             ],
         ),
         (TEST_URL_WITHOUT_REFS, []),
@@ -98,9 +114,7 @@ def test_links_returned_after_unsuccesful_html_page(mocker):
     with a non-200 status page. Even if a page returns hyperlinks, we'd like
     to skip pages with errors like [404: Not found] of [403: Forbidden].
     """
-    mocked_unsuccesful_response = MagicMock()
-    mocked_unsuccesful_response.status_code = 403
-    mocked_unsuccesful_response.text = HTML_PAGE_WITH_REFS
+    mocked_unsuccesful_response = MockHTTPResponse(403, HTML_PAGE_WITH_REFS)
     mocker.patch(
         "requests.get",
         return_value=mocked_unsuccesful_response,

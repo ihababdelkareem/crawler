@@ -16,8 +16,10 @@ def mock_links_under_url(url):
     mock_pages = {
         URL("https://monzo.com"): [
             URL("https://monzo.com/a"),
-            URL("https://monzo.blog.com/"), # Not explored, different subdomain
-            URL("localhost://monzo.com/local"), # Not explored, invalid address scheme (not http/https)
+            URL("https://monzo.blog.com/"),  # Not explored, different subdomain
+            URL(
+                "localhost://monzo.com/local"
+            ),  # Not explored, invalid address scheme (not http/https)
             URL("https://monzo.com/b"),
             URL("https://monzo.com/xyz"),
             URL("https://a.xyz"),
@@ -76,3 +78,27 @@ def test_crawler_launcher(mocker):
             URL("https://monzo.com"),
         ]
     )
+
+
+def test_crawler_launcher_wth_invalid_url(mocker):
+    """
+    Test that the crawler returns an empty list of URLs in case it is
+    seeded with an invalid URL.
+    """
+
+    # Set up crawler service to return set of URLs for each page
+    mocker.patch(
+        "crawler.launcher.HTMLParserService.get_links_under_url",
+        side_effect=mock_links_under_url,
+    )
+
+    # Set up options to use a base URL and certain thread count
+    options = CrawlerLauncherOptions(
+        base_url=URL("htx://invalid.com"), skip_links_found=False, thread_count=4
+    )
+
+    # Execute crawler launcher
+    visited_urls = CrawlerLauncher(options).crawl()
+
+    # Assert that the crawled URLs are as expected
+    assert not visited_urls

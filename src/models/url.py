@@ -7,11 +7,19 @@ class URL:
     Utility class to process different parts of an http address.
     """
 
-    HTTP = 'http'
-    HTTPS = 'https'
+    class URLScheme:
+        """Types of assumed URL schemes"""
+
+        HTTP = "http"
+        HTTPS = "https"
 
     def __init__(self, address: str) -> None:
-        """Initialize the URL with a given address
+        """
+        Initialize the URL with a given address.
+        A URL may be absolute, e.g. https://monzo.com or
+        a relative link, e.g. /faq/. In the case that it is a relative link,
+        it requires to be resolved before processing into the web-crawler.
+
 
         Args:
             address (address): http address for the URL
@@ -19,6 +27,7 @@ class URL:
         self._address = address
         self._subdomain = None
         self._address_scheme = None
+        self._is_relative_link = False
         self._parse_url()
 
     def _parse_url(self) -> str | None:
@@ -30,7 +39,7 @@ class URL:
         self._address_scheme = parsed_url.scheme
 
     @property
-    def subdomain(self) -> str | None :
+    def subdomain(self) -> str | None:
         """Returns parsed subdomain of URL
 
         Returns:
@@ -52,13 +61,16 @@ class URL:
     def is_valid(self) -> str:
         """
         Returns whether or not a link is valid based on predefined criteria.
-        For this web-crawler, a link is considered valid if it has a valid 
+        For this web-crawler, a link is considered valid if it has a valid
         subdomain and an http/https scheme.
 
         Returns:
             string: address
         """
-        return self._subdomain and self._address_scheme in {URL.HTTP, URL.HTTPS}
+        return self._subdomain and self._address_scheme in {
+            URL.URLScheme.HTTP,
+            URL.URLScheme.HTTPS,
+        }
 
     def __repr__(self) -> str:
         return f"URL[{self.address}]"
