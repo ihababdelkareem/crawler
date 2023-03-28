@@ -35,6 +35,8 @@ class HTMLParserService:
                 severity=Logger.Severity.ERROR,
             )
             return None
+
+        # Fail if HTTP status code is not OK
         http_status_code = html_page_response.status_code
         http_status_ok = html_page_response.ok
         if not http_status_ok:

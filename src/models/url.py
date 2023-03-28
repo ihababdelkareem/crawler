@@ -51,8 +51,8 @@ class URL:
     def is_valid(self) -> str:
         """
         Returns whether or not a link is valid based on predefined criteria.
-        For this web-crawler, a link is considered valid if it has a valid
-        subdomain and an http/https scheme.
+        For this web-crawler, a link is considered valid if it has a subdomain
+        and an http/https scheme.
 
         Returns:
             string: address
