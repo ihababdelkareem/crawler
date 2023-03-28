@@ -21,6 +21,16 @@ URL validity is assumed to be when a URL contains a valid subdomain, i.e. whenev
 ### Termination
 As more and more URLs are being explored from the threads, new URLs are enqueued at a high rate to be explored next. Theoritically, the program terminates once all previously added URLs have been picked up from the queue and processed. The queue can be polled by the main thread to check whenever this happens. Once this is established, a `Poisin Pill`/`Termination Singal` is sent to all of the threads to indicate that their crawling is over.
 
+### Trade-offs and Other Design Considerations
+There are multiple trade-offs that arise when designed a multi-component web-crawler, most of which revolve around the nature of the shared data stores that keep context of the overall web-crawler storage. 
+
+For example, the use of a single queue among all crawler workers leads to fairness in distributing all the pages discovered among the workers; however, this also leads to a bottleneck as there is a higher frequency of attempts to consume and produce URLs to the same queue, which may limit latency due to lock contention. On the other hand, one might consider using a queue per worker, which would limit such bottleneck but may cause un-even load patterns on the crawler workers or the loss of signifant parts of the URLs in case a worker is to terminate abruptly. 
+
+Another consideration that could be thought of differently is the method of termination of the web-crawler. The current termination policy depends on every crawler worker reporting that succesful processing of each item picked up from the URLs queue; however, this does not account for worker threads abruptly shutting down while processing a URL, which would cause an inconsistency in keeping track of all processed URLs.
+
+Finally, a further consideration might be setting limitations to the web-crawler, which would include its operation within certain boundaries such as setting the maximum number of pages to crawl, the maximum depth to reach, or a form of time limit.
+
+
 ## Running the Project
 To run the crawler or tests, first ensure that you have Python3 (3.10+ recommended) on your machine. After which you may install the required dependnecies from `requirements.txt` by running `pip3 install requirements.txt`
 ### Crawler
