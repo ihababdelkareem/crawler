@@ -46,26 +46,29 @@ class HTMLParserService:
             return None
         return html_page_response.text
 
-    def get_links_under_url(self, url: URL) -> list[URL]:
+    def get_links_under_url(self, url: URL) -> set[URL]:
         """
-        Returns a list of URL objects found under the HTML page of a source url.
+        Returns a set of URL objects found under the HTML page of a source url.
+        There are multiple reasons why a URL might be duplicate in a web-page,
+        such as it being referenced multiple times, or multiple fragments
+        (monzo.com#this_tab, monzo.com#that_tab) being referenced for the same address.
 
         Args:
             url (URL): Source URL for HTML page.
 
         Returns:
-            list[URL]: List of URLs found in the source URL's page.
+            set[URL]: Set of URLs found in the source URL's page.
         """
         url_address = url.address
         html_page = self._get_url_html_page(url)
         if not html_page:
-            return []
+            return set()
 
         soup = BeautifulSoup(html_page, "html.parser")
-        linked_urls = []
+        linked_urls = set()
         for address in soup.findAll("a"):
             parsed_address = address.get("href")
             # urljoin correctly handles absolute and relative paths.
             joined_address = urljoin(url_address, parsed_address)
-            linked_urls.append(URL(joined_address))
+            linked_urls.add(URL(joined_address))
         return linked_urls

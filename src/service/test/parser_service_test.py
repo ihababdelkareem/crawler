@@ -12,14 +12,18 @@ HTML_PAGE_WITH_REFS = """
 <html>
 <body>
 <p>
-Some link: <a href="https://www.monzo.com/a">
-Some other link: <a href="https://www.facebook.com/b">
+Other link: <a href="https://www.monzo.com/a">
+Other link mentioned twice: <a href="https://www.monzo.com/a">
+Other link w/fragment: <a href="https://www.monzo.com/a#frag">
+Other link [2]: <a href="https://www.facebook.com/b">
+Other link [2] w/fragment: <a href="https://www.facebook.com/b#other">
 <img border="0" alt="W3Schools" src="logo_w3s.gif" width="100" height="100">
 <div>
-Some third link: <a href="http://www.hello-world.com">
-Some forth link: <a href="http://www.monzo.com/a?q=hi">
-Some fifth relative link: <a href="relative.html">
-Some sixth relative link: <a href="/login">
+Other link [3]: <a href="http://www.hello-world.com">
+Other link [4]: <a href="http://www.monzo.com/a?q=hi">
+Relative link: <a href="relative.html">
+Relative link [2]: <a href="/login">
+Relative link [3]: <a href="/../"> 
 </div>
 </a>
 </p>
@@ -71,22 +75,25 @@ def _get_mocked_http_response(test_address):
     [
         (
             TEST_URL_WITH_REFS,
-            [
+            {
                 URL("https://www.monzo.com/a"),
                 URL("https://www.facebook.com/b"),
                 URL("http://www.hello-world.com"),
                 URL("http://www.monzo.com/a?q=hi"),
                 URL("https://monzo-links.com/faq/relative.html"),
                 URL("https://monzo-links.com/login"),
-            ],
+                URL("https://monzo-links.com/"),
+            },
         ),
-        (TEST_URL_WITHOUT_REFS, []),
+        (TEST_URL_WITHOUT_REFS, set()),
     ],
 )
 def test_links_under_url_returned(mocker, test_url, expected_urls):
     """
     Test that the parser service correctly returns
-    the right number of links when HTML contains href tags
+    the right number of links when HTML contains href tags.
+    This includes checking for duplicated links (By fragments or duplication),
+    and relative links that are resolved to their corresponding absolute links.
     """
     mocker.patch("requests.get", side_effect=_get_mocked_http_response)
     service = HTMLParserService(Mock())

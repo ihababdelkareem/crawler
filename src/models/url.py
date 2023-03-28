@@ -1,5 +1,5 @@
 """URL Model"""
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urldefrag
 
 
 class URL:
@@ -16,25 +16,15 @@ class URL:
     def __init__(self, address: str) -> None:
         """
         Initialize the URL with a given address.
-        A URL may be absolute, e.g. https://monzo.com or
-        a relative link, e.g. /faq/. In the case that it is a relative link,
-        it requires to be resolved before processing into the web-crawler.
-
+        When initializing a URL, any fragment is ignored, as it points
+        to the same web-page.
 
         Args:
-            address (address): http address for the URL
+            address (address): address for the URL
         """
-        self._address = address
-        self._subdomain = None
-        self._address_scheme = None
-        self._is_relative_link = False
-        self._parse_url()
-
-    def _parse_url(self) -> str | None:
-        """
-        Parses subdomain and address for URL.
-        """
-        parsed_url = urlparse(self._address)
+        defraged_url = urldefrag(address)
+        parsed_url = urlparse(defraged_url.url)
+        self._address = parsed_url.geturl()
         self._subdomain = parsed_url.hostname
         self._address_scheme = parsed_url.scheme
 
@@ -67,7 +57,8 @@ class URL:
         Returns:
             string: address
         """
-        return self._subdomain and self._address_scheme in {
+
+        return self._subdomain is not None and self._address_scheme in {
             URL.URLScheme.HTTP,
             URL.URLScheme.HTTPS,
         }

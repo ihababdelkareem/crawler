@@ -30,6 +30,7 @@ def test_url_subdomain(test_address, expected_subdomain):
         ("https://www.google.com/a/b"),
         ("https://monzo.com/x"),
         ("https://blog.monzo.com/"),
+        ("htx://blog.monzo.com/"),
     ],
 )
 def test_url_address(test_address):
@@ -46,8 +47,19 @@ def test_url_address(test_address):
     "first_url, second_url, expected_equality",
     [
         (URL("https://www.google.com/a/b"), URL("https://www.google.com/a/b"), True),
+        (
+            URL("https://www.google.com/a/b"),
+            URL("https://www.google.com/a/b#frag"),
+            True,
+        ),
+        (
+            URL("https://www.google.com/a/b#frag1"),
+            URL("https://www.google.com/a/b#frag2"),
+            True,
+        ),
         (URL("https://www.google.com/a/b"), URL("https://www.google.com/b/"), False),
         (URL("https://www.google.com/a/b"), "https://www.google.com/a/b", False),
+        (URL("https://www.monzo.com/a/b"), URL("https://www.google.com/a/b"), False),
     ],
 )
 def test_url_hash(first_url, second_url, expected_equality):
@@ -63,3 +75,25 @@ def test_url_hash(first_url, second_url, expected_equality):
     set_.add(second_url)
 
     assert (len(set_) == 1) == expected_equality
+
+
+@pytest.mark.parametrize(
+    "test_address, is_valid_expected",
+    [
+        ("https://www.google.com/a/b", True),
+        ("https://monzo.com/x", True),
+        ("https://blog.monzo.com#frag/", True),
+        ("htx://blog.monzo.com/", False),
+        ("no-prefix.blog.monzo.com/", False),
+        ("mailto:ihab@gmail.com", False),
+    ],
+)
+def test_url_valid(test_address, is_valid_expected):
+    """
+    Test that a URL is valid based on having a valid subdomain
+    and belonging to an http/https scheme.
+
+    Args:
+        test_address (str): test address for URL
+    """
+    assert URL(test_address).is_valid == is_valid_expected

@@ -66,8 +66,8 @@ class Crawler(Thread):
         url_to_crawl = self._repository.get_next_url()
         if url_to_crawl == Crawler.TERMINATION_SIGNAL:
             return False
-        message = f"Thread-{self._thread_id} is currently crawling: {url_to_crawl}\n"
         linked_urls = self._html_parser.get_links_under_url(url_to_crawl)
+        message = f"Thread-{self._thread_id} is currently crawling: {url_to_crawl}\n"
         if not self._options.skip_links_found:
             message += "------ Found following URLs in page: \n"
             for linked_url in linked_urls:

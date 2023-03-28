@@ -14,7 +14,7 @@ def mock_links_under_url(url):
         url (URL): url to use to get linked urls
     """
     mock_pages = {
-        URL("https://monzo.com"): [
+        URL("https://monzo.com"): {
             URL("https://monzo.com/a"),
             URL("https://monzo.blog.com/"),  # Not explored, different subdomain
             URL(
@@ -24,26 +24,26 @@ def mock_links_under_url(url):
             URL("https://monzo.com/xyz"),
             URL("https://a.xyz"),
             URL("https://abc.xyz"),
-        ],
-        URL("https://monzo.com/a"): [
+        },
+        URL("https://monzo.com/a"): {
             URL("https://monzo.com/a/c"),
             URL("https://monzo.com/a/d"),
             URL("https://monzo.com/xyz"),
             URL("https://a.xyz"),
             URL("https://abc.xyz"),
-        ],
-        URL("https://monzo.com/b"): [
+        },
+        URL("https://monzo.com/b"): {
             URL("https://monzo.com/a/c"),
             URL("https://monzo.com/a/w"),
             URL("https://monzo.com/xyz"),
             URL("https://a.xyz"),
             URL("https://abc.xyz"),
-        ],
+        },
     }
 
     # return an empty list if we the page is empty for a URL for any reason.
-    # e.g. when crawling `monzo.a.w`, return []
-    return mock_pages.get(url, [])
+    # e.g. when crawling `monzo.a.w`, return an empty set.
+    return mock_pages.get(url, set())
 
 
 def test_crawler_launcher(mocker):
@@ -67,17 +67,15 @@ def test_crawler_launcher(mocker):
     visited_urls = CrawlerLauncher(options).crawl()
 
     # Assert that the crawled URLs are as expected
-    assert set(visited_urls) == set(
-        [
-            URL("https://monzo.com/a"),
-            URL("https://monzo.com/b"),
-            URL("https://monzo.com/xyz"),
-            URL("https://monzo.com/a/c"),
-            URL("https://monzo.com/a/w"),
-            URL("https://monzo.com/a/d"),
-            URL("https://monzo.com"),
-        ]
-    )
+    assert set(visited_urls) == {
+        URL("https://monzo.com/a"),
+        URL("https://monzo.com/b"),
+        URL("https://monzo.com/xyz"),
+        URL("https://monzo.com/a/c"),
+        URL("https://monzo.com/a/w"),
+        URL("https://monzo.com/a/d"),
+        URL("https://monzo.com"),
+    }
 
 
 def test_crawler_launcher_wth_invalid_url(mocker):
