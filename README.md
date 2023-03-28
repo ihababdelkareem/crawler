@@ -1,6 +1,6 @@
 # Web Crawler
 
-This project is a simple web-crawler that explores all URLs found under the web-pages found from a starting URL. It is constrained to a single subdomain, meaning that only links matching the subdomain of the starting link are explored. All links however that are found under a crawled web-page are logged. The crawler can be configured with options such as the `number of threads to use`, which `URL to start from`, and whether or not to `log all pages found under an explored URL`.
+This project is a simple web-crawler that explores all URLs found under the web-pages from a starting URL. It is constrained to a single subdomain, meaning that only links matching the subdomain of the starting link are explored. All links however that are found under a crawled web-page are logged. The crawler can be configured with options such as the `number of threads to use`, which `URL to start from`, and whether or not to `log all pages found under an explored URL`.
 
 ## Functionality
 
