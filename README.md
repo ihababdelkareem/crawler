@@ -15,7 +15,8 @@ Race conditions are expected to occur in the case of multiple threads attempting
 
 ### Nature of URLs
 As expected when parsing a web-page, we may encounter absolute URLs being referenced, such as https://monzo.com/ referencing https://monzo.com/contacts. Additionaly, we may encounter relative links, such as https://monzo.com/faq/ referencing
-`/faq/2022`, which resolves to https://monzo.com/faq/2022. Both relative and absolute URLs are resolved and added to be explored in the URLs queue.
+`/faq/2022`, which resolves to https://monzo.com/faq/2022. Both relative and absolute URLs are resolved and added to be explored in the URLs queue. Furthermore, URLs may contain fragments, e.g. `#fragment`, which point the web-browser to a specific location within the web-page. URL fragments are dropped, as they don't contribute to finding a completely new web-page, and therefore are considered to be duplicate with their original web-page. Finally, 
+URL validity is assumed to be when a URL contains a valid subdomain, i.e. whenever it is extractable, and an HTTP/HTTP address scheme, for example, the address `mailto:ihab@gmail.com` is not valid, neither is htx://gmail.com.
 
 ### Termination
 As more and more URLs are being explored from the threads, new URLs are enqueued at a high rate to be explored next. Theoritically, the program terminates once all previously added URLs have been picked up from the queue and processed. The queue can be polled by the main thread to check whenever this happens. Once this is established, a `Poisin Pill`/`Termination Singal` is sent to all of the threads to indicate that their crawling is over.
