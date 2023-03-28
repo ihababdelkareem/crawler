@@ -28,7 +28,7 @@ For example, the use of a single queue among all crawler workers leads to fairne
 
 Another consideration that could be thought of differently is the method of termination of the web-crawler. The current termination policy depends on every crawler worker reporting that succesful processing of each item picked up from the URLs queue; however, this does not account for worker threads abruptly shutting down while processing a URL, which would cause an inconsistency in keeping track of all processed URLs.
 
-Finally, a further consideration might be setting limitations to the web-crawler, which would include its operation within certain boundaries such as setting the maximum number of pages to crawl, the maximum depth to reach, or a form of time limit.
+Finally, a further consideration might be setting limitations to the web-crawler, which would include its operation within certain boundaries instead of exhaustively enumerating all pages within a certain subdomain. Such limitation include setting the maximum number of pages to crawl, the maximum depth to reach, or setting a time limit for the web-crawler. 
 
 
 ## Running the Project
