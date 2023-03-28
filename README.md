@@ -33,7 +33,7 @@ Another consideration that could be thought of differently is the method of term
 Finally, a further consideration might be setting limitations to the web-crawler, which would include its operation within certain boundaries instead of exhaustively enumerating all pages within a certain subdomain. Such limitation include setting the maximum number of pages to crawl, the maximum depth to reach, or setting a time limit for the web-crawler. 
 
 ### URL handling
-As discussed previously, URLs can take various shapes and forms to lead to a resource on a remote machine. In this project, a URL was considered **explorable** once it qualified within the format of `<http/https>:<host>`, while invalid URLs, say `mailto:ihab@gmail` were logged without being explored. This assumption may limit our search space for other types of URLs that may also return valid HTML content, e.g. direct host address `172.253.62.99` or different URL schemes. 
+As discussed previously, URLs can take various shapes and forms to lead to a resource on a remote machine. In this project, a URL was considered **explorable** once it qualified within the format of `<http/https>:<host>`, while invalid URLs, say `mailto:ihab@gmail` were logged without being explored. This assumption may limit our search space for other types of URLs that may also return valid HTML content, e.g. direct host address `172.253.62.99`, valid addresses with omitted or different URL schemes, e.g. `www.facebook.com`. 
 
 We may also explore the possibility of pruning our search space to avoid requesting content for pages that are likely not to return HTML despite having a valid URL, e.g. `https://hostname.com/file.pdf`, instead of considering this as a resource that has no references.
 
