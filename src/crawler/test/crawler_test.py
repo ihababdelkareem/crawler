@@ -15,11 +15,11 @@ def test_crawler_run_with_next_url(mocker):
     )
     mock_repo = mocker.patch("crawler.crawler.Repository")
     mock_html_service.get_links_under_url.return_value = [
-        URL("https://monzo.com/b"),
-        URL("https://monzo.com/c"),
+        URL("https://website.com/b"),
+        URL("https://website.com/c"),
         URL("https://xyz.com/c"),
     ]
-    base_url = URL("https://monzo.com")
+    base_url = URL("https://website.com")
     options = CrawlerOptions(
         base_url_hostname=base_url.subdomain, skip_links_found=False
     )
@@ -29,7 +29,7 @@ def test_crawler_run_with_next_url(mocker):
     next_url_status = crawler_worker.crawl_next_url()
 
     # Assert that next_url_status is True (Not a termination signal)
-    # and that the expected two urls that match the base subdomain (monzo.b, monzo.c)
+    # and that the expected two urls that match the base subdomain (website.b, website.c)
     # are added to be crawled next
     assert next_url_status is True
     assert mock_repo.get_next_url.call_count == 1
@@ -48,11 +48,11 @@ def test_crawler_run_with_termination_signal(mocker):
     mock_repo = mocker.patch("crawler.crawler.Repository")
     mock_repo.get_next_url.return_value = Crawler.TERMINATION_SIGNAL
     mock_html_service.get_links_under_url.return_value = [
-        URL("https://monzo.com/b"),
-        URL("https://monzo.com/c"),
+        URL("https://website.com/b"),
+        URL("https://website.com/c"),
         URL("https://xyz.com/c"),
     ]
-    base_url = URL("https://monzo.com")
+    base_url = URL("https://website.com")
     options = CrawlerOptions(
         base_url_hostname=base_url.subdomain, skip_links_found=False
     )

@@ -14,8 +14,8 @@ Race conditions are expected to occur in the case of multiple threads attempting
 - Multiple threads attempting to log statements at the same time, leading in unexpected std-out behaviour or intertwined log statements, which is also handled by a lock.
 
 ### Nature of URLs
-As expected when parsing a web-page, we may encounter absolute URLs being referenced, such as https://monzo.com/ referencing https://monzo.com/contacts. Additionaly, we may encounter relative links, such as https://monzo.com/faq/ referencing
-`/faq/2022`, which resolves to https://monzo.com/faq/2022. Both relative and absolute URLs are resolved and added to be explored in the URLs queue. Furthermore, URLs may contain fragments, e.g. `#fragment`, which point the web-browser to a specific location within the web-page. URL fragments are dropped, as they don't contribute to finding a completely new web-page, and therefore are considered to be duplicate with their original web-page. Finally, 
+As expected when parsing a web-page, we may encounter absolute URLs being referenced, such as https://website.com/ referencing https://website.com/contacts. Additionaly, we may encounter relative links, such as https://website.com/faq/ referencing
+`/faq/2022`, which resolves to https://website.com/faq/2022. Both relative and absolute URLs are resolved and added to be explored in the URLs queue. Furthermore, URLs may contain fragments, e.g. `#fragment`, which point the web-browser to a specific location within the web-page. URL fragments are dropped, as they don't contribute to finding a completely new web-page, and therefore are considered to be duplicate with their original web-page. Finally, 
 URL validity is assumed to be when a URL contains a valid subdomain, i.e. whenever it is extractable, and an HTTP/HTTP address scheme, for example, the address `mailto:ihab@gmail.com` is not valid, neither is `htxyz://gmail.com`.
 
 ### Termination
@@ -48,7 +48,7 @@ python3 src/main.py [-h] [--thread_count [THREAD_COUNT]] [--base_url [BASE_URL]]
 Example:
 
 ```sh
-python3 src/main.py --thread_count=4 --base_url==https://monzo.com
+python3 src/main.py --thread_count=4 --base_url==https://website.com
 ```
 
 After which the activity of each thread will be logged. 
@@ -56,15 +56,15 @@ After which the activity of each thread will be logged.
 Example of logged output:
 
 ```
-Thread:1 is crawling: URL[https://monzo.com/blog/2018/07/03/the-big-list-update/]
+Thread:1 is crawling: URL[https://website.com/blog/2018/07/03/the-big-list-update/]
 ------ Found following URLs in page: 
 ...
------- URL[http://monzo.com/]
------- URL[https://monzo.com/blog/2018/05/22/making-monzo-better/]
------- URL[https://monzo.com/blog/2018/06/14/bill-tracker/]
------- URL[https://twitter.com/makingmonzo]
------- URL[https://twitter.com/makingmonzo?ref_src=twsrc%5Etfw]
------- URL[https://community.monzo.com]
+------ URL[http://website.com/]
+------ URL[https://website.com/blog/2018/05/22/making-website-better/]
+------ URL[https://website.com/blog/2018/06/14/bill-tracker/]
+------ URL[https://twitter.com/makingwebsite]
+------ URL[https://twitter.com/makingwebsite?ref_src=twsrc%5Etfw]
+------ URL[https://community.website.com]
 ...
 ```
 

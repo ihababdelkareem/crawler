@@ -6,21 +6,21 @@ from requests import RequestException
 from models.url import URL
 from service.parser_service import HTMLParserService
 
-TEST_URL_WITH_REFS = URL("https://monzo-links.com/faq/index.html")
+TEST_URL_WITH_REFS = URL("https://website-links.com/faq/index.html")
 HTML_PAGE_WITH_REFS = """
 <!DOCTYPE html>
 <html>
 <body>
 <p>
-Other link: <a href="https://www.monzo.com/a">
-Other link mentioned twice: <a href="https://www.monzo.com/a">
-Other link w/fragment: <a href="https://www.monzo.com/a#frag">
+Other link: <a href="https://www.website.com/a">
+Other link mentioned twice: <a href="https://www.website.com/a">
+Other link w/fragment: <a href="https://www.website.com/a#frag">
 Other link [2]: <a href="https://www.facebook.com/b">
 Other link [2] w/fragment: <a href="https://www.facebook.com/b#other">
 <img border="0" alt="W3Schools" src="logo_w3s.gif" width="100" height="100">
 <div>
 Other link [3]: <a href="http://www.hello-world.com">
-Other link [4]: <a href="http://www.monzo.com/a?q=hi">
+Other link [4]: <a href="http://www.website.com/a?q=hi">
 Relative link: <a href="relative.html">
 Relative link [2]: <a href="/login">
 Relative link [3]: <a href="/../"> 
@@ -31,7 +31,7 @@ Relative link [3]: <a href="/../">
 </html>
 """
 
-TEST_URL_WITHOUT_REFS = URL("https://monzo-no-links.com")
+TEST_URL_WITHOUT_REFS = URL("https://website-no-links.com")
 HTML_PAGE_WITHOUT_REFS = """
 <!DOCTYPE html>
 <html>
@@ -76,13 +76,13 @@ def _get_mocked_http_response(test_address):
         (
             TEST_URL_WITH_REFS,
             {
-                URL("https://www.monzo.com/a"),
+                URL("https://www.website.com/a"),
                 URL("https://www.facebook.com/b"),
                 URL("http://www.hello-world.com"),
-                URL("http://www.monzo.com/a?q=hi"),
-                URL("https://monzo-links.com/faq/relative.html"),
-                URL("https://monzo-links.com/login"),
-                URL("https://monzo-links.com/"),
+                URL("http://www.website.com/a?q=hi"),
+                URL("https://website-links.com/faq/relative.html"),
+                URL("https://website-links.com/login"),
+                URL("https://website-links.com/"),
             },
         ),
         (TEST_URL_WITHOUT_REFS, set()),

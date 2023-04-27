@@ -8,41 +8,41 @@ def mock_links_under_url(url):
     """
     Mimics a web page and the links it redirects to.
     In this simple example, the explored pages are
-    [monzo.com -> monzo.com/a -> monzo.com/b -> monzo.com/xyz ->
-    monzo.com/a/c -> monzo.com/a/d -> monzo.com/a/w]
+    [website.com -> website.com/a -> website.com/b -> website.com/xyz ->
+    website.com/a/c -> website.com/a/d -> website.com/a/w]
     Args:
         url (URL): url to use to get linked urls
     """
     mock_pages = {
-        URL("https://monzo.com"): {
-            URL("https://monzo.com/a"),
-            URL("https://monzo.blog.com/"),  # Not explored, different subdomain
+        URL("https://website.com"): {
+            URL("https://website.com/a"),
+            URL("https://website.blog.com/"),  # Not explored, different subdomain
             URL(
-                "localhost://monzo.com/local"
+                "localhost://website.com/local"
             ),  # Not explored, invalid address scheme (not http/https)
-            URL("https://monzo.com/b"),
-            URL("https://monzo.com/xyz"),
+            URL("https://website.com/b"),
+            URL("https://website.com/xyz"),
             URL("https://a.xyz"),
             URL("https://abc.xyz"),
         },
-        URL("https://monzo.com/a"): {
-            URL("https://monzo.com/a/c"),
-            URL("https://monzo.com/a/d"),
-            URL("https://monzo.com/xyz"),
+        URL("https://website.com/a"): {
+            URL("https://website.com/a/c"),
+            URL("https://website.com/a/d"),
+            URL("https://website.com/xyz"),
             URL("https://a.xyz"),
             URL("https://abc.xyz"),
         },
-        URL("https://monzo.com/b"): {
-            URL("https://monzo.com/a/c"),
-            URL("https://monzo.com/a/w"),
-            URL("https://monzo.com/xyz"),
+        URL("https://website.com/b"): {
+            URL("https://website.com/a/c"),
+            URL("https://website.com/a/w"),
+            URL("https://website.com/xyz"),
             URL("https://a.xyz"),
             URL("https://abc.xyz"),
         },
     }
 
     # return an empty list if we the page is empty for a URL for any reason.
-    # e.g. when crawling `monzo.a.w`, return an empty set.
+    # e.g. when crawling `website.a.w`, return an empty set.
     return mock_pages.get(url, set())
 
 
@@ -60,7 +60,7 @@ def test_crawler_launcher(mocker):
 
     # Set up options to use a base URL and certain thread count
     options = CrawlerLauncherOptions(
-        base_url=URL("https://monzo.com"), skip_links_found=False, thread_count=4
+        base_url=URL("https://website.com"), skip_links_found=False, thread_count=4
     )
 
     # Execute crawler launcher
@@ -68,13 +68,13 @@ def test_crawler_launcher(mocker):
 
     # Assert that the crawled URLs are as expected
     assert set(visited_urls) == {
-        URL("https://monzo.com/a"),
-        URL("https://monzo.com/b"),
-        URL("https://monzo.com/xyz"),
-        URL("https://monzo.com/a/c"),
-        URL("https://monzo.com/a/w"),
-        URL("https://monzo.com/a/d"),
-        URL("https://monzo.com"),
+        URL("https://website.com/a"),
+        URL("https://website.com/b"),
+        URL("https://website.com/xyz"),
+        URL("https://website.com/a/c"),
+        URL("https://website.com/a/w"),
+        URL("https://website.com/a/d"),
+        URL("https://website.com"),
     }
 
 

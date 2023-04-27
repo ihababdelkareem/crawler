@@ -3,7 +3,7 @@ import argparse
 from crawler.launcher import CrawlerLauncher, CrawlerLauncherOptions
 from models.url import URL
 
-MONZO_BASE_URL = "https://monzo.com/"
+BASE_URL = "https://www.lindushealth.com/"
 
 
 if __name__ == "__main__":
@@ -23,7 +23,7 @@ if __name__ == "__main__":
         help="Base URL to contain crawler into a single subdomain",
         nargs="?",
         type=str,
-        default=MONZO_BASE_URL,
+        default=BASE_URL,
     )
     parser.add_argument(
         "--skip_links_found",

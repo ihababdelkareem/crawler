@@ -53,7 +53,7 @@ class HTMLParserService:
         Returns a set of URL objects found under the HTML page of a source url.
         There are multiple reasons why a URL might be duplicate in a web-page,
         such as it being referenced multiple times, or multiple fragments
-        (monzo.com#this_tab, monzo.com#that_tab) being referenced for the same address.
+        (website.com#this_tab, website.com#that_tab) being referenced for the same address.
 
         Args:
             url (URL): Source URL for HTML page.

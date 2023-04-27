@@ -8,9 +8,9 @@ from models.url import URL
     "test_address,expected_subdomain",
     [
         ("https://www.google.com/a/b", "www.google.com"),
-        ("https://monzo.com/x", "monzo.com"),
-        ("https://blog.monzo.com/", "blog.monzo.com"),
-        ("monzo.com", None),
+        ("https://website.com/x", "website.com"),
+        ("https://blog.website.com/", "blog.website.com"),
+        ("website.com", None),
     ],
 )
 def test_url_subdomain(test_address, expected_subdomain):
@@ -28,9 +28,9 @@ def test_url_subdomain(test_address, expected_subdomain):
     "test_address",
     [
         ("https://www.google.com/a/b"),
-        ("https://monzo.com/x"),
-        ("https://blog.monzo.com/"),
-        ("htx://blog.monzo.com/"),
+        ("https://website.com/x"),
+        ("https://blog.website.com/"),
+        ("htx://blog.website.com/"),
     ],
 )
 def test_url_address(test_address):
@@ -59,7 +59,7 @@ def test_url_address(test_address):
         ),
         (URL("https://www.google.com/a/b"), URL("https://www.google.com/b/"), False),
         (URL("https://www.google.com/a/b"), "https://www.google.com/a/b", False),
-        (URL("https://www.monzo.com/a/b"), URL("https://www.google.com/a/b"), False),
+        (URL("https://www.website.com/a/b"), URL("https://www.google.com/a/b"), False),
     ],
 )
 def test_url_hash(first_url, second_url, expected_equality):
@@ -81,10 +81,10 @@ def test_url_hash(first_url, second_url, expected_equality):
     "test_address, is_valid_expected",
     [
         ("https://www.google.com/a/b", True),
-        ("https://monzo.com/x", True),
-        ("https://blog.monzo.com#frag/", True),
-        ("htx://blog.monzo.com/", False),
-        ("no-prefix.blog.monzo.com/", False),
+        ("https://website.com/x", True),
+        ("https://blog.website.com#frag/", True),
+        ("htx://blog.website.com/", False),
+        ("no-prefix.blog.website.com/", False),
         ("mailto:ihab@gmail.com", False),
     ],
 )
