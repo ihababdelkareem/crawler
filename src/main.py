@@ -16,7 +16,7 @@ if __name__ == "__main__":
         help="Number of threads to user for crawler",
         nargs="?",
         type=int,
-        default=1,
+        default=2,
     )
     parser.add_argument(
         "--base_url",
